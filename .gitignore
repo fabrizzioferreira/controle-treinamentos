@@ -71,3 +71,6 @@ node_modules/
 *.db-wal
 *.sql.gz
 *.dump.gz
+
+# A chave dos backups criptografados deve permanecer fora do GitHub.
+CHAVE-PRIVADA-*.json

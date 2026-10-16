@@ -2,6 +2,14 @@
 
 Aplicacao web interna para controle de tripulantes, treinamentos, vencimentos e operacao de bases.
 
+## Backup dos dados
+
+O backup de 16/10/2026 esta na [Release de backup criptografado](https://github.com/fabrizzioferreira/controle-treinamentos/releases/tag/backup-20261016-141945) deste repositorio privado.
+
+Ele inclui os bancos de producao, homologacao e desenvolvimento, fotos/anexos existentes, configuracoes e versoes implantadas. Baixe todos os arquivos em **Assets** e siga `COMO-RECUPERAR-BACKUP.txt`. Os dados sao criptografados com AES-256-GCM; a chave foi entregue separadamente ao proprietario e nao esta no GitHub. Os arquivos de dados sao baixados pela Release e nao acompanham `git clone`.
+
+Os dumps foram conferidos pelo `pg_restore`, e todas as partes remotas foram recuperadas e verificadas por SHA-256. A restauracao em um banco novo ainda precisa ser testada em ambiente com espaco livre suficiente.
+
 ## Modelo oficial
 
 O produto opera em servidor local / self-hosted Windows:
