@@ -2383,7 +2383,6 @@ function crewValidationMessages(payload) {
   const terceiroId = normalizeText(payload.terceiro_tripulante_id);
   const terceiroFuncao = normalizeLower(payload.terceiro_tripulante_funcao);
   if (!comandanteId) messages.push("Informe o comandante da missão.");
-  if (!copilotoId && !terceiroId) messages.push("Informe o segundo tripulante ou o terceiro tripulante da missão.");
   if (comandanteId && copilotoId && comandanteId === copilotoId) {
     messages.push("Comandante e segundo tripulante não podem ser o mesmo tripulante.");
   }

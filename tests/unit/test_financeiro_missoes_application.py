@@ -425,6 +425,18 @@ def test_mission_payload_accepts_third_crew_without_copilot():
     assert payload["terceiro_tripulante_funcao"] == "copiloto"
 
 
+def test_mission_payload_accepts_commander_without_additional_crew():
+    payload = usecases._mission_payload(
+        _payload(copiloto_tripulante_id=""),
+        org_id=FINANCE_ORG_SCOPE_DEFAULT,
+        actor_user_id=55,
+    )
+
+    assert payload["comandante_tripulante_id"] == 101
+    assert payload["copiloto_tripulante_id"] is None
+    assert payload["terceiro_tripulante_id"] is None
+
+
 def test_mission_payload_bloqueia_data_final_anterior_e_pos_exec_negativo():
     with pytest.raises(usecases.FinanceiroDominioErro) as invalid_date:
         usecases._mission_payload(
@@ -525,6 +537,18 @@ def test_required_participants_accepts_third_crew_without_copilot():
 
     assert [item["tripulante_id"] for item in participants] == [101, 303]
     assert [item["funcao"] for item in participants] == ["comandante", "copiloto"]
+
+
+def test_required_participants_accepts_commander_without_additional_crew():
+    mission = _mission_detail(copiloto_tripulante_id=None)
+    mission["participantes"] = [
+        {"tripulante_id": 101, "funcao": "comandante", "status": "ativo"},
+    ]
+
+    participants = usecases._required_participants(mission)
+
+    assert [item["tripulante_id"] for item in participants] == [101]
+    assert [item["funcao"] for item in participants] == ["comandante"]
 
 
 def test_required_participants_rejects_repeated_tripulante():

@@ -29,7 +29,7 @@ Representa o fato operacional que gera calculos financeiros.
 | `aeronave_id` | integer | Sim | Request | Referencia a aeronave/equipamento existente |
 | `categoria_financeira_aeronave` | enum | Sim | Backend/request | Categoria usada para calculo financeiro |
 | `comandante_tripulante_id` | integer | Sim | Request | Referencia ao Cadastro de Tripulantes |
-| `copiloto_tripulante_id` | integer | Sim | Request | Referencia ao Cadastro de Tripulantes |
+| `copiloto_tripulante_id` | integer | Não | Request | Referência opcional ao Cadastro de Tripulantes |
 | `horario_apresentacao` | datetime | Sim | Request | Horario unico da missao |
 | `horario_abandono` | datetime | Sim | Request | Horario unico da missao |
 | `trecho` | string | Sim | Request | Trecho operacional |

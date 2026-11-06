@@ -1417,11 +1417,11 @@ def _mission_payload_from_journey(
     elif funcao == "copiloto" and not tripulante_is_terceiro:
         copiloto_id = copiloto_id or tripulante_id
         comandante_id = comandante_id or counterpart_id
-    if not comandante_id or (not copiloto_id and not terceiro_id):
+    if not comandante_id:
         raise DomainValidationError(
-            "A linha de jornada usa a missao operacional como base e exige comandante e ao menos mais um tripulante para persistir.",
-            code="finance_journey_crew_pair_required",
-            details={"fields": ["comandante_tripulante_id", "copiloto_tripulante_id", "terceiro_tripulante_id"]},
+            "A linha de jornada usa a missao operacional como base e exige comandante para persistir.",
+            code="finance_journey_commander_required",
+            details={"fields": ["comandante_tripulante_id"]},
         )
     comandante_tripulante = (
         tripulante

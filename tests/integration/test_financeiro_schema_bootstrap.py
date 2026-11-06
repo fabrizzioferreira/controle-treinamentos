@@ -273,7 +273,7 @@ def test_finance_bootstrap_creates_fks_constraints_and_indexes(bootstrapped_db):
         bootstrapped_db,
         "financeiro_missoes_operacionais",
     )
-    assert "financeiro_missoes_operacionais_tripulacao_minima" in _constraint_names(
+    assert "financeiro_missoes_operacionais_tripulacao_minima" not in _constraint_names(
         bootstrapped_db,
         "financeiro_missoes_operacionais",
     )

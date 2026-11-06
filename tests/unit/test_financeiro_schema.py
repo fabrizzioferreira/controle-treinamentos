@@ -69,7 +69,7 @@ def test_operational_mission_keeps_single_timeline_and_participants_have_no_time
     assert "tipo_tripulacao_jornada TEXT NOT NULL DEFAULT 'simples'" in mission_sql
     assert "financeiro_missoes_operacionais_tipo_tripulacao_jornada_check" in mission_sql
     assert "tipo_tripulacao_jornada IN ('simples', 'composta', 'revezamento')" in mission_sql
-    assert "financeiro_missoes_operacionais_tripulacao_minima" in mission_sql
+    assert "financeiro_missoes_operacionais_tripulacao_minima" not in mission_sql
     assert "financeiro_missoes_operacionais_terceiro_consistente" in mission_sql
     assert "financeiro_missoes_operacionais_terceiro_distinto" in mission_sql
     assert "aeronave_id INTEGER REFERENCES equipamentos (id)" in mission_sql

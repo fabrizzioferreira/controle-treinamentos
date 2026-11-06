@@ -158,7 +158,7 @@ Campos principais:
 | `aeronave_id` | `INTEGER` | não no banco, exigido pela Jornada | - | FK `equipamentos(id)` |
 | `categoria_financeira_aeronave` | `TEXT` | não no banco, exigido pela Jornada | - | categorias normalizadas |
 | `comandante_tripulante_id` | `INTEGER` | sim | - | FK `tripulantes(id)` |
-| `copiloto_tripulante_id` | `INTEGER` | não | - | FK; pelo menos copiloto ou terceiro |
+| `copiloto_tripulante_id` | `INTEGER` | não | - | FK opcional; distinto do comandante quando informado |
 | `terceiro_tripulante_id` | `INTEGER` | não | - | FK |
 | `terceiro_tripulante_funcao` | `TEXT` | condicional | - | `comandante` ou `copiloto`; consistente com terceiro |
 | `tipo_tripulacao_jornada` | `TEXT` | sim | `simples` | `simples`, `composta`, `revezamento` |
@@ -179,7 +179,7 @@ Campos principais:
 Constraints relevantes:
 
 - Comandante e copiloto distintos quando copiloto existe.
-- Ao menos `copiloto_tripulante_id` ou `terceiro_tripulante_id`.
+- `copiloto_tripulante_id` e `terceiro_tripulante_id` são opcionais; a missão pode ser lançada somente com o comandante.
 - Terceiro e função adicional devem ser ambos nulos ou ambos preenchidos.
 - Terceiro deve ser distinto de comandante e copiloto.
 - Regime deve estar no domínio `simples`, `composta`, `revezamento`.
@@ -293,7 +293,7 @@ Usada para validar aeronave ativa, nome/tipo e categoria financeira.
 | Data inicial | `data`/`data_missao` | date | UI -> missão | manual | sim | filtro competência/new | formato date; deve pertencer à competência; base de horários | cálculo, relatórios, feriados, competência |
 | Data final | `data_final` | date | UI -> missão | manual | não | data inicial | não anterior à inicial | virada de dia, fatiamento, relatórios |
 | Comandante | `comandante_tripulante_id` | int | tripulantes | manual/derivado | sim | filtro/linha | ativo; distinto; obrigatório | participante, cálculo, produtividade, auditoria |
-| Segundo tripulante | `copiloto_tripulante_id` | int | tripulantes | manual/derivado | condicional | vazio | ativo; distinto; exige copiloto ou terceiro | participante e cálculo |
+| Segundo tripulante | `copiloto_tripulante_id` | int | tripulantes | manual/derivado | opcional | vazio | ativo e distinto do comandante quando informado | participante e cálculo |
 | 3º tripulante | `terceiro_tripulante_id` | int | tripulantes | manual | não | vazio | se informado exige função; distinto | participante adicional |
 | Função 3º trip. | `terceiro_tripulante_funcao` | enum | UI | manual | condicional | vazio | `comandante` ou `copiloto`; consistente com terceiro | função financeira do terceiro |
 | Tripulante da linha | `tripulante_id` | int | derivado da tripulação/filtro | automático na UI; obrigatório no payload | sim | filtro | deve ser um dos tripulantes e ativo | chave da linha/cálculo |

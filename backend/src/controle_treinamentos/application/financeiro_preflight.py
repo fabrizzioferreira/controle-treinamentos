@@ -480,7 +480,7 @@ def _valid_missions(rows: list[dict]) -> list[dict]:
         status = _clean_text(row.get("status")).lower()
         if status == "cancelada":
             continue
-        if _to_int(row.get("comandante_tripulante_id")) is None or _to_int(row.get("copiloto_tripulante_id")) is None:
+        if _to_int(row.get("comandante_tripulante_id")) is None:
             continue
         if _is_semantically_none(row.get("horario_apresentacao")) or _is_semantically_none(row.get("horario_abandono")):
             continue
@@ -650,18 +650,6 @@ def preflight_calculo_missao(
                 entity_id=mission.get("id"),
                 field="comandante_tripulante_id",
                 next_action="Vincular comandante ativo na missao operacional.",
-            ),
-        )
-    if len(active_participants) < 2:
-        _append_unique(
-            bloqueios,
-            _block(
-                code="finance_preflight_missing_second_crew",
-                message="Segundo tripulante da missao nao encontrado.",
-                entity_type="finance_mission",
-                entity_id=mission.get("id"),
-                field="copiloto_tripulante_id",
-                next_action="Vincular segundo tripulante ativo na missao operacional.",
             ),
         )
     if _to_int(mission.get("aeronave_id")) is None:

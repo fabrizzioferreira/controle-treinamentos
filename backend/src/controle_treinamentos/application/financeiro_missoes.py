@@ -287,11 +287,6 @@ def _mission_payload(payload: dict, *, org_id: str, actor_user_id: int | None = 
     copiloto_id = _optional_int(payload.get("copiloto_tripulante_id"), label="Segundo tripulante")
     terceiro_id = _optional_int(payload.get("terceiro_tripulante_id"), label="Terceiro tripulante")
     terceiro_funcao = _optional_funcao(payload.get("terceiro_tripulante_funcao"), label="Funcao do terceiro tripulante")
-    if copiloto_id is None and terceiro_id is None:
-        raise FinanceiroDominioErro(
-            "Missao operacional deve possuir comandante e ao menos mais um tripulante.",
-            code="missao_operacional_tripulantes_obrigatorios",
-        )
     if copiloto_id is not None and comandante_id == copiloto_id:
         raise FinanceiroDominioErro(
             "Comandante e segundo tripulante devem ser distintos.",
@@ -441,10 +436,6 @@ def _preview_missing_fields(payload: dict) -> list[dict]:
         value = payload.get(key)
         if value in (None, "") or str(value).strip() == "":
             missing.append({"field": key, "label": label})
-    copiloto_id = _clean_text(payload.get("copiloto_tripulante_id"))
-    terceiro_id = _clean_text(payload.get("terceiro_tripulante_id"))
-    if not copiloto_id and not terceiro_id:
-        missing.append({"field": "tripulante_adicional_id", "label": "segundo ou terceiro tripulante"})
     return missing
 
 
@@ -579,7 +570,10 @@ def _effective_participants(mission: dict) -> list[dict]:
         if tripulante_id is None:
             continue
         if tripulante_id in seen:
-            continue
+            raise FinanceiroDominioErro(
+                "Missao operacional possui tripulante repetido.",
+                code="missao_operacional_tripulantes_obrigatorios",
+            )
         seen.add(tripulante_id)
         participants.append({**participant, "tripulante_id": tripulante_id, "funcao": funcao})
     return participants
@@ -622,9 +616,9 @@ def _required_participants(mission: dict) -> list[dict]:
             participants.append(terceiro)
             participant_ids.add(terceiro["tripulante_id"])
     has_commander = any(item["funcao"] == "comandante" for item in participants)
-    if len(participants) < 2 or not has_commander:
+    if not has_commander:
         raise FinanceiroDominioErro(
-            "Missao operacional deve possuir ao menos um comandante e dois tripulantes distintos para recalc.",
+            "Missao operacional deve possuir ao menos um comandante para recalc.",
             code="missao_operacional_tripulantes_obrigatorios",
         )
     return sorted(
@@ -1497,11 +1491,6 @@ def atualizar_missao_operacional(
             if "terceiro_tripulante_funcao" in data
             else _optional_funcao(before_row.get("terceiro_tripulante_funcao"), label="Funcao do terceiro tripulante")
         )
-        if copiloto_id is None and terceiro_id is None:
-            raise FinanceiroDominioErro(
-                "Missao operacional deve possuir comandante e ao menos mais um tripulante.",
-                code="missao_operacional_tripulantes_obrigatorios",
-            )
         if copiloto_id is not None and comandante_id == copiloto_id:
             raise FinanceiroDominioErro(
                 "Comandante e segundo tripulante devem ser distintos.",

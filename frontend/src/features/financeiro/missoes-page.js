@@ -1462,11 +1462,7 @@ function missingPreviewFields(payload) {
   return PREVIEW_REQUIRED_FIELDS.filter((field) => {
     const value = payload?.[field.key];
     return value === null || value === undefined || String(value).trim() === "";
-  }).concat(
-    !String(payload?.copiloto_tripulante_id || "").trim() && !String(payload?.terceiro_tripulante_id || "").trim()
-      ? [{ key: "tripulante_adicional_id", label: "segundo ou terceiro tripulante" }]
-      : [],
-  );
+  });
 }
 
 function previewSignature(payload) {
@@ -1563,10 +1559,6 @@ function validateMissionCrew(form) {
   markCrewFields(form, false);
   if (!comandanteId) {
     renderInlineFeedback(feedback, "Informe o comandante a partir do cadastro de tripulantes ou pelo ID.", "warning");
-    return false;
-  }
-  if (!copilotoId && !terceiroId) {
-    renderInlineFeedback(feedback, "Informe o segundo tripulante ou o terceiro tripulante da missão.", "warning");
     return false;
   }
   if (comandanteId === copilotoId) {

@@ -428,9 +428,9 @@ def test_financeiro_missoes_page_keeps_operational_form_contract():
     assert "MISSION_CREW_FUNCTION_LABELS" in feature
     assert "data.terceiro_tripulante_id = data.terceiro_tripulante_id || selectedMission?.terceiro_tripulante_id || \"\"" in feature
     assert "data.terceiro_tripulante_funcao = data.terceiro_tripulante_funcao || selectedMission?.terceiro_tripulante_funcao || \"\"" in feature
-    assert "Informe o segundo tripulante ou o terceiro tripulante da missão." in feature
+    assert "Informe o segundo tripulante ou o terceiro tripulante da missão." not in feature
     assert "Terceiro tripulante deve ser distinto do comandante e do segundo tripulante." in feature
-    assert "{ key: \"tripulante_adicional_id\", label: \"segundo ou terceiro tripulante\" }" in feature
+    assert "tripulante_adicional_id" not in feature
     assert "disabled: editing" not in feature
     assert "delete data.comandante_tripulante_id" not in feature
     assert "delete data.copiloto_tripulante_id" not in feature
